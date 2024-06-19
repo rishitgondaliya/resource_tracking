@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="digitalResourceApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXlFbz4rkn0GZxHEeCoYlroQ6ABblHVI5Y9zH9MP3xVk6N/IfC4SrZ5iM"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgjCJo7kIVvkrxwr7gT2Nt3CQBxSBl8H+AHjrIPrylgj0vKO8sw"
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        .form-control-dark-border {
+            border-color: #121314;
+            /* Dark border color */
+        }
+    </style>
+
+</head>
+
+<body ng-controller="uploadmarkcontroller">
+    <div>
+        <h3>Please Enter Following Details.</h3>
+    </div>
+
+    <div>
+
+        <label for="department">Department : </label>
+        <select id="department" ng-model="dept"" ng-change="fetchSubjects()">
+            <option value="it">Information Technology</option>
+            <option value="ce">Computer Engineering</option>
+            <option value="civil">Civil Engineering</option>
+            <option value="mech">Mechanical Engineering</option>
+            <option value="aiml">AI/ML</option>
+            <option value="chem">Chemical Engineering</option>
+        </select>
+
+        <label for="sem">Sem : </label>
+        <select id="sem" ng-model="sem" ng-change="fetchSubjects()">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+
+        <label for="subject">Subject : </label>
+        <select id="subject" ng-model="subject">
+            <option ng-repeat="subject in subjects" value="{{subject}}">{{subject}}</option>
+        </select>
+
+        <label for="curr_year">Enter Admission Year : </label>
+        <input type="number" id="curr_year" ng-model="currentyear" />
+
+        <button class="btn btn-primary btn-sm" ng-click="enterForMark()">Enter</button>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1">
+                <h4>Sr no.</h4>
+            </div>
+            <div class="col-md-2">
+                <h4>Enroll Number</h4>
+            </div>
+            <div class="col-md-3">
+                <h4>Name</h4>
+            </div>
+            <div class="col-md-3">
+                <h4>Subject</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>Mid Mark (30)</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>Remid Mark (30)</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>Viva Mark (20)</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div ng-repeat="student in students track by $index">
+            <div class="row mt-2">
+                <div class="col-sm-1">
+                    <h6>Student-{{$index + 1}}</h6>
+                </div>
+                <div class="col-sm-2"><input type="number" ng-model="student.enrollment"
+                        class="form-control form-control-sm form-control-dark-border" readonly></div>
+                <div class="col-sm-3"><input type="text" ng-model="student.name"
+                        class="form-control form-control-sm form-control-dark-border" readonly></div>
+                <div class="col-sm-3"><input type="text" ng-model="subject"
+                        class="form-control form-control-sm form-control-dark-border" readonly></div>
+                <div class="col-sm-1"><input type="number" ng-model="student.midmark"
+                        class="form-control form-control-sm form-control-dark-border" max="30" required></div>
+                <div class="col-sm-1"><input type="number" ng-model="student.remidmark"
+                        class="form-control form-control-sm form-control-dark-border" max="30" required></div>
+                <div class="col-sm-1"><input type="number" ng-model="student.vivamark"
+                        class="form-control form-control-sm form-control-dark-border" max="20" required></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <button class="btn btn-success mx-auto d-block" ng-click="saveData()">Submit</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

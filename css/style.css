@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+.popup {
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: flex;
+    transform: translate(-50%, -50%) scale(0.1);
+    visibility: hidden;
+    transition: ease-in 0.4s, top 0.4s;
+}
+
+.annouceBtnpopup {
+    margin: 100px;
+    margin-top: 700px;
+}
+
+.open-popup {
+    visibility: visible;
+    top: 100px;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.annoucement-table {
+    margin-top: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    
+}
+.table-box{
+    display: block;
+    width: 500px;
+}
+
+.title {
+    width: 50px;
+    margin: 60px;
+    padding: 50px;
+}
+
+table,
+th,
+td {
+    /* border: 2px solid rgb(35, 35, 70); */
+    justify-content: center;
+    align-items: center;
+}
+
+.annoucement-table {
+    visibility: hidden;
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    display: flex;
+    transform: translate(-50%, -50%) scale(0.5);
+    transition: ease-in 0.4s, top 0.4s;
+    
+}
+
+.open-popup-table {
+    visibility: visible;
+    top: 200px;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+.container {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    overflow: hidden;
+}
+
+.headline{
+    border: 1px solid white;
+    background-color: white;
+    margin: 0%;
+}
+
+.scroll {
+    white-space: nowrap;
+    margin: 0 2em;
+}
+
+.scroll div {
+    display: flex;
+    gap: 2 em;
+}
+
+.scroll p {
+    font-size: 2em;
+    color: rgb(181, 21, 21);
+    font-weight: bold;
+    margin-bottom: 0;
+    line-height: 10px;
+}
+@keyframes RightToLeft {
+    from{
+        transform: translateX(0%);
+    }
+    to{
+        transform: translateX(-50%);
+    }
+}
+.RightToLeft{
+    animation: RightToLeft 10s infinite linear; 
+}

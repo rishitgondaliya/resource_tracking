@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Lecture Timetable Generator</title>
+    <link rel="stylesheet" href="../css/Student_styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>College Lecture Timetable Generator</h1>
+        <div class="form">
+            <label for="semester">Semester:</label>
+            <input type="text" id="semester">
+
+            <label for="division">Division:</label>
+            <input type="text" id="division">
+
+            <label for="subjects">Subjects (comma separated):</label>
+            <input type="text" id="subjects">
+
+            <label for="hours">Hours per week:</label>
+            <input type="number" id="hours">
+
+            <button onclick="generateTimetable()">Generate Timetable</button>
+        </div>
+
+        <div id="timetable"></div>
+    </div>
+
+    <script src="../js/Student_javascript.js"></script>
+</body>
+</html>

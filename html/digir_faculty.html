@@ -1,0 +1,269 @@
+<html ng-app="digitalResourceApp">
+
+<head>
+
+    <title>DigitalResource Faculty</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .ldheader {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid blue;
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            height: fit-content;
+            width: fit-content;
+            margin-left: 400px;
+        }
+
+        .ldname {
+            font-size: 35px;
+            height: fit-content;
+            width: fit-content;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-left: 10px;
+        }
+
+        .menubar {
+            margin-left: 100px;
+            display: flex;
+        }
+
+        .loc {
+            font-size: 20px;
+        }
+
+        .headline {
+            width: fit-content;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            margin-left: 130px;
+            color: #00008b;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            border-bottom: 4px solid #00008b;
+        }
+
+        .headline1 {
+            width: fit-content;
+            margin: 15px 0 15px 250px;
+            color: #00008b;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            border-bottom: 4px solid #00008b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ldheader">
+        <div class="logo"><img src="/css/ldlogo.png" style="height: 100px; width: 100px;"></div>
+        <div class="ldname">L.D. College of Engineering <div class="loc">Ahmedabad, Gujarat, India</div>
+        </div>
+    </div>
+
+    <div class="menubar">
+        <a href="/" style="text-decoration: none;">
+            <div class="headline">Home</div>
+        </a>
+        <a href="#!upload_marks" style="text-decoration: none;">
+            <div class="headline">Upload Marks</div>
+        </a>
+        <a href="#!upload_documents" style="text-decoration: none;">
+            <div class="headline">Upload Documents</div>
+        </a>
+        <a href="#!check_correction" style="text-decoration: none;">
+            <div class="headline">Check Correction</div>
+        </a>
+    </div>
+
+
+    <div ng-view></div>
+
+
+    <script>
+        var app = angular.module('digitalResourceApp', ['ngRoute']);
+
+        app.config(function ($routeProvider) {
+            $routeProvider
+                .when("/", {
+                    template: "<h1>hello</h1>"
+                })
+                .when("/upload_marks", {
+                    templateUrl: "upload_marks.html",
+                    controller: "uploadmarkcontroller"
+                })
+                .when("/upload_documents", {
+                    templateUrl: "upload_documents.html",
+                    controller: "uploaddocumentcontroller"
+                })
+                .when("/check_correction", {
+                    templateUrl: "check_correction.html"
+                });
+        });
+
+        app.controller('uploadmarkcontroller', ['$scope', '$http', function ($scope, $http) {
+            $scope.subjects = [];
+            $scope.students = [];
+            $scope.dept = '';
+            $scope.sem = '';
+            $scope.currentyear = '';
+            $scope.subject = '';
+
+
+            $scope.fetchSubjects = function () {
+                if ($scope.dept && $scope.sem) {
+                    $http.get(`/subjects/${$scope.dept}/${$scope.sem}`)
+                        .then(function (response) {
+                            $scope.subjects = [];
+                            var subjectData = response.data;
+                            for (var key in subjectData) {
+                                if (subjectData.hasOwnProperty(key) && key.startsWith('subject')) {
+                                    $scope.subjects.push(subjectData[key]);
+                                }
+                            }
+                            alert('subject fetched');
+                        }, function (error) {
+                            console.error('Error fetching subjects:', error);
+                        });
+                }
+            };
+
+            $scope.enterForMark = function () {
+                if ($scope.dept && $scope.sem && $scope.currentyear) {
+                    const collectionName = `${$scope.dept}_${$scope.sem}_${$scope.currentyear}`;
+                    $http.get(`/api/students/${collectionName}`).then(function (response) {
+                        $scope.students = response.data;
+                    }).catch(function (error) {
+                        console.error('Error fetching students:', error);
+                    });
+                }
+            };
+
+            $scope.saveData = function () {
+                const department = $scope.dept;
+                const semester = $scope.sem;
+                const year = $scope.currentyear;
+                const collectionName = `${department}_${semester}_${year}_marks`;
+                const data = $scope.students.map(student => {
+                    return {
+                        enrollment: student.enrollment,
+                        name: student.name,
+                        [`${$scope.subject}_midmark`]: student.midmark || 'N/A',
+                        [`${$scope.subject}_remidmark`]: student.remidmark || 'N/A',
+                        [`${$scope.subject}_vivamark`]: student.vivamark || 'N/A'
+                    };
+                });
+                $http.post('/saveMarks', { collectionName, data })
+                    .then(response => {
+                        alert('Data saved successfully!');
+                    })
+                    .catch(error => {
+                        console.error('Error saving data:', error);
+                        alert('Failed to save data. Please try again.');
+                    });
+            };
+        }]);
+
+
+
+
+
+        app.controller('uploaddocumentcontroller', ['$scope', '$http', function ($scope, $http) {
+            $scope.subjects = [];
+            $scope.dept = '';
+            $scope.sem = '';
+            $scope.subject = '';
+
+
+            $scope.fetchSubjects = function () {
+                if ($scope.dept && $scope.sem) {
+                    $http.get(`/subjects/${$scope.dept}/${$scope.sem}`)
+                        .then(function (response) {
+                            $scope.subjects = [];
+                            var subjectData = response.data;
+                            for (var key in subjectData) {
+                                if (subjectData.hasOwnProperty(key) && key.startsWith('subject')) {
+                                    $scope.subjects.push(subjectData[key]);
+                                }
+                            }
+                            alert('subject fetched');
+                        }, function (error) {
+                            console.error('Error fetching subjects:', error);
+                        });
+                }
+            };
+
+            $scope.uploadFile = function () {
+                var file = document.getElementById('book').files[0];
+                if (!file) {
+                    alert("Please select a file to upload.");
+                    return;
+                }
+                if ($scope.dept && $scope.sem && $scope.subject) {
+                    var sanitizedSubject = $scope.subject.replace(/\s+/g, '');
+                    var fileName = $scope.dept + '_' + $scope.sem + '_' + sanitizedSubject;
+
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    $http.post(`/upload?name=${fileName}`, formData, {
+                        headers: { 'Content-Type': undefined }
+                    }).then(response => {
+                        alert("File uploaded successfully");
+                    }).catch(error => {
+                        alert("File upload failed");
+                        console.error(error);
+                    });
+                }
+            };
+
+            $scope.displayFile = function () {
+                $scope.fileList = [];
+                $http.get('/files').then(response => {
+                    $scope.fileList = response.data.files.filter(file => {
+                        const isMatching = file.department === $scope.dept &&
+                            file.semester === $scope.sem &&
+                            file.subject === $scope.subject.replace(/\s+/g, '');
+                        // Check if the file name starts with the selected parameters
+                        const startsWithParams = file.name.startsWith(`${$scope.dept}_${$scope.sem}_${$scope.subject.replace(/\s+/g, '')}`);
+                        return isMatching || startsWithParams;
+                    });
+                }).catch(error => {
+                    console.error('Error fetching file list:', error);
+                });
+            };
+
+            $scope.downloadFile = function (fileName) {
+                window.location.href = `/download?name=${fileName}`;
+            };
+
+            $scope.deleteFile = function (fileName) {
+                $http.delete(`/delete?name=${fileName}`).then(response => {
+                    alert('File deleted successfully');
+                    $scope.displayFile(); // Refresh the file list after deletion
+                }).catch(error => {
+                    alert('File deletion failed');
+                    console.error('Error deleting file:', error);
+                });
+            };
+
+
+        }]);
+
+
+
+    </script>
+</body>
+
+</html>

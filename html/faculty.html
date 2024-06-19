@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Faculty Time Table</title>
+    <link rel="stylesheet" href="../css/faculty_css.css">
+</head>
+<body>
+    <div class="container">
+        <h1>College Faculty Time Table</h1>
+        <div id="inputForm">
+            <label for="facultyName">Faculty Name:</label>
+            <input type="text" id="facultyName">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject">
+            <label for="weeklyHours">Weekly Hours:</label>
+            <input type="number" id="weeklyHours">
+            <label for="daysPerWeek">Days Per Week:</label>
+            <input type="number" id="daysPerWeek">
+            <button onclick="generateTimetable()">Generate Timetable</button>
+        </div>
+        <div id="timetable"></div>
+    </div>
+    <script src="../js/faculty_js.js"></script>
+</body>
+</html>

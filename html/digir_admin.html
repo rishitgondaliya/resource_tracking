@@ -1,0 +1,319 @@
+<html ng-app="digitalResourceApp">
+
+<head>
+
+    <title>DigitalResource Admin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="../js/servicesEditData.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .ldheader {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid blue;
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            height: fit-content;
+            width: fit-content;
+            margin-left: 400px;
+        }
+
+        .ldname {
+            font-size: 35px;
+            height: fit-content;
+            width: fit-content;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-left: 10px;
+        }
+
+        .menubar {
+            margin-left: 100px;
+            display: flex;
+        }
+
+        .loc {
+            font-size: 20px;
+        }
+
+        .headline {
+            width: fit-content;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            margin-left: 130px;
+            color: #00008b;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            border-bottom: 4px solid #00008b;
+        }
+
+        .headline1 {
+            width: fit-content;
+            margin: 15px 0 15px 250px;
+            color: #00008b;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            border-bottom: 4px solid #00008b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ldheader">
+        <div class="logo"><img src="/css/ldlogo.png" style="height: 100px; width: 100px;"></div>
+        <div class="ldname">L.D. College of Engineering <div class="loc">Ahmedabad, Gujarat, India</div>
+        </div>
+    </div>
+
+    <div class="menubar">
+        <a href="/" style="text-decoration: none;">
+            <div class="headline">Home</div>
+        </a>
+        <a href="#!register_student" style="text-decoration: none;">
+            <div class="headline">Register Student Data</div>
+        </a>
+        <a href="#!edit_data" style="text-decoration: none;">
+            <div class="headline">Edit Student Data</div>
+        </a>
+        <a href="#!shift_sem" style="text-decoration: none;">
+            <div class="headline">Change Student Sem</div>
+        </a>
+    </div>
+
+
+    <div ng-view></div>
+
+
+    <script>
+        var app = angular.module('digitalResourceApp', ['ngRoute']);
+
+        app.config(function ($routeProvider) {
+            $routeProvider
+                .when("/", {
+                    template: "<h1>hello</h1>"
+                })
+                .when("/register_student", {
+                    templateUrl: "register_student.html",
+                    controller: "scontroller"
+                })
+                .when("/edit_data", {
+                    templateUrl: "edit_data.html",
+                    controller: "editdatacontroller"
+                })
+                .when("/shift_sem", {
+                    templateUrl: "shift_sem.html",
+                    controller: "shiftsemcontroller"
+                });
+        });
+
+        app.controller('scontroller', ['$scope', '$http', function ($scope, $http) {
+            $scope.numberOfStudents = 1;
+            $scope.students = [{}]; // Default to one student
+            $scope.updateStudents = function () {
+                const newStudentCount = $scope.numberOfStudents;
+                const currentStudentCount = $scope.students.length;
+
+                if (newStudentCount > currentStudentCount) {
+                    for (let i = currentStudentCount; i < newStudentCount; i++) {
+                        $scope.students.push({});
+                    }
+                } else if (newStudentCount < currentStudentCount) {
+                    $scope.students.splice(newStudentCount);
+                }
+                $scope.updateDepartment();
+                $scope.updateSemester();
+            };
+
+            $scope.updateSemester = function () {
+                angular.forEach($scope.students, function (student) {
+                    student.semester = $scope.sem;
+                });
+            };
+
+            // Function to update department in each student object
+            $scope.updateDepartment = function () {
+                angular.forEach($scope.students, function (student) {
+                    student.department = $scope.dept;
+                });
+            };
+
+            $scope.saveData = function () {
+                const dataToSave = {
+                    department: $scope.dept.toString(),
+                    semester: $scope.sem.toString(),
+                    currentYear: $scope.currentyear.toString(),
+                    students: $scope.students
+                };
+
+                // Send an HTTP POST request to the server
+                $http.post('/saveData', dataToSave)
+                    .then(function (response) {
+                        console.log('Data saved successfully:', response.data);
+                        // Optionally, handle success response
+                    })
+                    .catch(function (error) {
+                        console.error('Error saving data:', error);
+                        // Optionally, handle error response
+                    });
+            }
+        }]);
+
+        // app.js
+        app.factory('StudentService', ['$http', function ($http) {
+            return {
+                getStudents: function (department, semester, year) {
+                    return $http.get(`/students/${department}/${semester}/${year}`);
+                },
+                updateStudents: function (department, semester, year, students) {
+                return $http.put(`/students/${department}/${semester}/${year}`, students);
+                },
+                deleteAllStudents: function (department, semester, year) {
+                    return $http.delete(`/students/${department}/${semester}/${year}`);
+                },
+                deleteSpecificStudent: function (department, semester, year, enrollment) {
+                    return $http.delete(`/student/${department}/${semester}/${year}/${enrollment}`);
+                },
+                shiftSemester: function (department, semester, year, newSemester) {
+                    return $http.post('/shift-semester', { department, semester, year, newSemester });
+                }
+            };
+        }]);
+
+        app.controller('editdatacontroller', ['$scope', 'StudentService', function ($scope, StudentService) {
+            $scope.students = [];
+
+            $scope.displayData = function () {
+                const department = $scope.dept;
+                const semester = $scope.sem;
+                const currentYear = $scope.currentyear;
+
+                if (department && semester && currentYear) {
+                    StudentService.getStudents(department, semester, currentYear)
+                        .then(function (response) {
+                            if (response.data.message === 'Collection not found') {
+                                alert('No data found: Collection does not exist.');
+                            } else if (response.data.message === 'Collection is available but no data found') {
+                                alert('Collection is available but no data found.');
+                            } else {
+                                $scope.students = response.data;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error('Error fetching students:', error);
+                        });
+                } else {
+                    alert('Please select department, semester, and enter admission year.');
+                }
+            };
+            
+            $scope.saveData = function () {
+        const department = $scope.dept;
+        const semester = $scope.sem;
+        const currentYear = $scope.currentyear;
+
+        const updatedStudents = $scope.students.map(function (student) {
+            return {
+                department: department,
+                semester: semester,
+                currentYear: currentYear,
+                enrollment: student.enrollment,
+                name: student.name,
+                email: student.email,
+                phone: student.phone
+            };
+        });
+
+        StudentService.updateStudents(department, semester, currentYear, updatedStudents)
+            .then(function (response) {
+                if(response.data.message === 'Collection does not exist'){
+                    alert('collection does not exist');
+                }
+                else if(response.data.message === 'Student data updated successfully'){
+                console.log('Data updated successfully:', response.data);
+                    alert('Student data updated successfully');
+                }
+            })
+            .catch(function (error) {
+                console.error('Error updating data:', error);
+                alert('error' , error);
+            });
+        };
+
+        $scope.deleteData = function () {
+                const department = $scope.dept;
+                const semester = $scope.sem;
+                const currentYear = $scope.currentyear;
+
+                if (department && semester && currentYear) {
+                    StudentService.deleteAllStudents(department, semester, currentYear)
+                        .then(function (response) {
+                            alert('All student data deleted successfully.');
+                            $scope.students = [];
+                        })
+                        .catch(function (error) {
+                            console.error('Error deleting data:', error);
+                            alert('Error deleting data.');
+                        });
+                } else {
+                    alert('Please select department, semester, and enter admission year.');
+                }
+            };
+        
+            $scope.deleteSpecificData = function () {
+                $scope.showEnrollmentInput = true;
+            };
+
+            $scope.deleteSpecific = function () {
+                const department = $scope.dept;
+                const semester = $scope.sem;
+                const currentYear = $scope.currentyear;
+                const enrollment = $scope.specificEnrollment;
+
+                if (department && semester && currentYear && enrollment) {
+                    StudentService.deleteSpecificStudent(department, semester, currentYear, enrollment)
+                        .then(function (response) {
+                            alert(response.data.message);
+                            $scope.showEnrollmentInput = false;
+                            $scope.displayData();
+                        })
+                        .catch(function (error) {
+                            console.error('Error deleting specific student:', error);
+                            alert('Error deleting specific student');
+                        });
+                } else {
+                    alert('Please select department, semester, and enter admission year and enrollment number.');
+                }
+            };
+        }]);
+
+        app.controller('shiftsemcontroller', ['$scope', 'StudentService', function ($scope, StudentService) {
+            $scope.shiftSem = function () {
+                const department = $scope.dept;
+                const semester = $scope.sem;
+                const year = $scope.currentyear;
+                const newSemester = $scope.sem2;
+                if (department && semester && year && newSemester) {
+                    StudentService.shiftSemester(department, semester, year, newSemester)
+                        .then(function (response) {
+                            alert(response.data.message);
+                        })
+                        .catch(function (error) {
+                            console.error('Error shifting semester:', error);
+                            alert('Error shifting semester');
+                        });
+                } else {
+                    alert('Please select all fields');
+                }
+            };
+        }]);
+    </script>
+</body>
+
+</html>
