@@ -5,75 +5,25 @@
     <title>DigitalResource Faculty</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        .ldheader {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            border-bottom: 3px solid blue;
-            padding-bottom: 20px;
-        }
-
-        .logo {
-            height: fit-content;
-            width: fit-content;
-            margin-left: 400px;
-        }
-
-        .ldname {
-            font-size: 35px;
-            height: fit-content;
-            width: fit-content;
-            font-family: Arial, Helvetica, sans-serif;
-            padding-left: 10px;
-        }
-
-        .menubar {
-            margin-left: 100px;
-            display: flex;
-        }
-
-        .loc {
-            font-size: 20px;
-        }
-
-        .headline {
-            width: fit-content;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            margin-left: 130px;
-            color: #00008b;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            border-bottom: 4px solid #00008b;
-        }
-
-        .headline1 {
-            width: fit-content;
-            margin: 15px 0 15px 250px;
-            color: #00008b;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            border-bottom: 4px solid #00008b;
-        }
-    </style>
+    <!-- custom css -->
+    <link rel="stylesheet" href="/SEM6/DE/resource_tracking/css/style.css">
 </head>
 
 <body>
     <div class="ldheader">
-        <div class="logo"><img src="/css/ldlogo.png" style="height: 100px; width: 100px;"></div>
-        <div class="ldname">L.D. College of Engineering <div class="loc">Ahmedabad, Gujarat, India</div>
+        <div class="logo">
+            <img src="/SEM6/DE/resource_tracking/css/ldlogo.png" style="height: 100px; width: 100px;">
+        </div>
+        <div class="ldname">L. D. College of Engineering
+            <div class="loc">Ahemedabad, Gujarat, India</div>
+        </div>
+        <div class="gtu">
+            <img src="/SEM6/DE/resource_tracking/css/affiliated.png" alt="">
         </div>
     </div>
 
-    <div class="menubar">
-        <a href="/" style="text-decoration: none;">
+    <nav>
+        <a href="/SEM6/DE/resource_tracking/html/index.html" style="text-decoration: none;">
             <div class="headline">Home</div>
         </a>
         <a href="#!upload_marks" style="text-decoration: none;">
@@ -85,11 +35,9 @@
         <a href="#!check_correction" style="text-decoration: none;">
             <div class="headline">Check Correction</div>
         </a>
-    </div>
-
+    </nav>
 
     <div ng-view></div>
-
 
     <script>
         var app = angular.module('digitalResourceApp', ['ngRoute']);

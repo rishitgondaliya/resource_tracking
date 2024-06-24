@@ -2,9 +2,95 @@
     margin: 0;
     padding: 0;
 }
+/* header */
+.ldheader {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid blue;
+    padding-bottom: 20px;
+    justify-content: space-between;
+    padding: 16px;
+}
 
+/* logo */
+.logo {
+    height: fit-content;
+    width: fit-content;
+}
 
-.popup {
+/* name */
+.ldname {
+    font-size: 35px;
+    height: fit-content;
+    width: 80%;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 12px;
+}
+
+.loc {
+    font-size: 20px;
+}
+
+/* navbar */
+nav {
+    width: 70%;
+    margin: 0px auto 30px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* home page */
+.headline {
+    width: fit-content;
+    margin: 15px 0px;
+    /* margin-left: 130px; */
+    color: #00008b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    border-bottom: 4px solid #00008b;
+}
+
+.headline1 {
+    width: fit-content;
+    margin: 15px 0 15px 225px;
+    color: #00008b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+}
+
+.content {
+    height: fit-content;
+    width: 70%;
+    margin: 10px auto 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    padding: 15px;
+    border-left: 2px solid #00008b;
+}
+
+.content ul {
+    margin-left: 10px;
+}
+
+hr {
+    width: 70%;
+    border: 1px solid #00008b;
+    margin: 4px auto;
+}
+
+/* footer */
+footer {
+    text-align: center;
+    font-size: 20px;
+    margin: 20px auto;
+    color: #00008b;
+    background-color: aliceblue;
+}
+
+/* .popup {
     border-radius: 50%;
     position: absolute;
     top: 0;
@@ -32,12 +118,13 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.3);
-    
+
 }
-.table-box{
+
+.table-box {
     display: block;
     width: 500px;
-}
+} */
 
 .title {
     width: 50px;
@@ -53,7 +140,7 @@ td {
     align-items: center;
 }
 
-.annoucement-table {
+/* .annoucement-table {
     visibility: hidden;
     position: absolute;
     top: -30%;
@@ -61,24 +148,29 @@ td {
     display: flex;
     transform: translate(-50%, -50%) scale(0.5);
     transition: ease-in 0.4s, top 0.4s;
-    
+
 }
 
 .open-popup-table {
     visibility: visible;
     top: 200px;
     transform: translate(-50%, -50%) scale(1);
-}
+} */
 
-
+/* upload marks */
 .container {
     display: flex;
     align-items: center;
-    height: 10vh;
-    overflow: hidden;
+    margin-top: 40px;
+    /* height: 10vh; */
+    /* overflow: hidden; */
 }
 
-.headline{
+.card {
+    width: 80%;
+}
+
+.headline {
     border: 1px solid white;
     background-color: white;
     margin: 0%;
@@ -101,14 +193,17 @@ td {
     margin-bottom: 0;
     line-height: 10px;
 }
+
 @keyframes RightToLeft {
-    from{
+    from {
         transform: translateX(0%);
     }
-    to{
+
+    to {
         transform: translateX(-50%);
     }
 }
-.RightToLeft{
-    animation: RightToLeft 10s infinite linear; 
+
+.RightToLeft {
+    animation: RightToLeft 10s infinite linear;
 }
