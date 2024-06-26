@@ -4,39 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXlFbz4rkn0GZxHEeCoYlroQ6ABblHVI5Y9zH9MP3xVk6N/IfC4SrZ5iM"
         crossorigin="anonymous"></script>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgjCJo7kIVvkrxwr7gT2Nt3CQBxSBl8H+AHjrIPrylgj0vKO8sw"
         crossorigin="anonymous"></script>
-
     <title>Document</title>
 
-    <!-- custom css -->
-    <link rel="stylesheet" href="/SEM6/DE/resource_tracking/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            width: 70%;
+            margin: 0px auto 20px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .container1 {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-list {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 8px;
+            /* Adjust as needed */
+        }
+
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            padding: 8px;
+            /* Adjust as needed */
+        }
+
+        .form-control-sm {
+            padding: 5px;
+        }
+
+        .btn-primary,
+        .btn-success {
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .container1 {
+                padding: 30px;
+                /* Increase padding for better spacing */
+            }
+
+            .btn-primary,
+            .btn-success {
+                width: auto;
+            }
+        }
+    </style>
 </head>
 
 <body ng-controller="uploadmarkcontroller">
-    <div class="container">
-        <div class="card p-4 mb-4">
-            <h4 class="mb-3">Enter the following details</h4>
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-4">
+    <div class="container1">
+        <h3>Please Enter Following Details.</h3>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td style="width: 30%;">
                         <label for="department">Department:</label>
                         <select id="department" class="form-control" ng-model="dept" ng-change="fetchSubjects()">
                             <option value="it">Information Technology</option>
@@ -46,8 +111,8 @@
                             <option value="aiml">AI/ML</option>
                             <option value="chem">Chemical Engineering</option>
                         </select>
-                    </div>
-                    <div class="form-group col-md-1">
+                    </td>
+                    <td style="width: 10%;">
                         <label for="sem">Sem:</label>
                         <select id="sem" class="form-control" ng-model="sem" ng-change="fetchSubjects()">
                             <option value="1">1</option>
@@ -59,88 +124,59 @@
                             <option value="7">7</option>
                             <option value="8">8</option>
                         </select>
-                    </div>
-                    <div class="form-group col-md-4">
+                    </td>
+                    <td style="width: 30%;">
                         <label for="subject">Subject:</label>
                         <select id="subject" class="form-control" ng-model="subject">
                             <option ng-repeat="subject in subjects" value="{{subject}}">{{subject}}</option>
                         </select>
-                    </div>
-                    <div class="form-group col-md-3">
+                    </td>
+                    <td style="width: 30%;">
                         <label for="curr_year">Enter Admission Year:</label>
-                        <input type="number" class="form-control" id="curr_year" ng-model="currentyear" />
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary btn-sm" ng-click="enterForMark()">Enter</button>
-            </form>
-        </div>
-    </div>
-    <div class="container">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Sr no.</th>
-                    <th>Enroll Number</th>
-                    <th>Name</th>
-                    <th>Subject</th>
-                    <th>Mid Mark (30)</th>
-                    <th>Remid Mark (30)</th>
-                    <th>Viva Mark (20)</th>
+                        <input type="number" id="curr_year" class="form-control" ng-model="currentyear" />
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>123456</td>
-                    <td>John Doe</td>
-                    <td>Mathematics</td>
-                    <td>28</td>
-                    <td>27</td>
-                    <td>18</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>789012</td>
-                    <td>Jane Smith</td>
-                    <td>Physics</td>
-                    <td>25</td>
-                    <td>26</td>
-                    <td>19</td>
-                </tr>
-                <!-- Add more rows as needed -->
             </tbody>
         </table>
-    </div>
-    <div class="container-fluid">
-        <div ng-repeat="student in students track by $index">
-            <div class="row mt-2">
-                <div class="col-sm-1">
-                    <h6>Student-{{$index + 1}}</h6>
-                </div>
-                <div class="col-sm-2"><input type="number" ng-model="student.enrollment"
-                        class="form-control form-control-sm form-control-dark-border" readonly></div>
-                <div class="col-sm-3"><input type="text" ng-model="student.name"
-                        class="form-control form-control-sm form-control-dark-border" readonly></div>
-                <div class="col-sm-3"><input type="text" ng-model="subject"
-                        class="form-control form-control-sm form-control-dark-border" readonly></div>
-                <div class="col-sm-1"><input type="number" ng-model="student.midmark"
-                        class="form-control form-control-sm form-control-dark-border" max="30" required></div>
-                <div class="col-sm-1"><input type="number" ng-model="student.remidmark"
-                        class="form-control form-control-sm form-control-dark-border" max="30" required></div>
-                <div class="col-sm-1"><input type="number" ng-model="student.vivamark"
-                        class="form-control form-control-sm form-control-dark-border" max="20" required></div>
-            </div>
+        <div class="button-container mt-3">
+            <button class="btn btn-primary" ng-click="enterForMark()">Enter</button>
         </div>
     </div>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8">
-                <button class="btn btn-success mx-auto d-block" ng-click="saveData()">Submit</button>
-            </div>
-        </div>
+    <div class="container-fluid mt-5 student-list">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Sr no.</th>
+                    <th scope="col">Enroll Number</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Mid Mark (30)</th>
+                    <th scope="col">Remid Mark (30)</th>
+                    <th scope="col">Viva Mark (20)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="student in students track by $index">
+                    <th scope="row">{{ $index + 1 }}</th>
+                    <td><input type="number" ng-model="student.enrollment" class="form-control form-control-sm"
+                            readonly></td>
+                    <td><input type="text" ng-model="student.name" class="form-control form-control-sm" readonly></td>
+                    <td><input type="text" ng-model="subject" class="form-control form-control-sm" readonly></td>
+                    <td><input type="number" ng-model="student.midmark" class="form-control form-control-sm" max="30"
+                            required></td>
+                    <td><input type="number" ng-model="student.remidmark" class="form-control form-control-sm" max="30"
+                            required></td>
+                    <td><input type="number" ng-model="student.vivamark" class="form-control form-control-sm" max="20"
+                            required></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <div class="button-container mt-3">
+        <button class="btn btn-success" ng-click="saveData()">Submit</button>
+    </div>
 </body>
 
 </html>

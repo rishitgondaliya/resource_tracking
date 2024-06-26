@@ -1,7 +1,8 @@
-* {
+body {
     margin: 0;
     padding: 0;
 }
+
 /* header */
 .ldheader {
     margin-top: 20px;
@@ -36,7 +37,7 @@
 /* navbar */
 nav {
     width: 70%;
-    margin: 0px auto 30px;
+    margin: 0px auto 20px;
     padding: 12px;
     display: flex;
     justify-content: space-around;
@@ -46,11 +47,9 @@ nav {
 .headline {
     width: fit-content;
     margin: 15px 0px;
-    /* margin-left: 130px; */
     color: #00008b;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    border-bottom: 4px solid #00008b;
 }
 
 .headline1 {
@@ -90,7 +89,22 @@ footer {
     background-color: aliceblue;
 }
 
-/* .popup {
+.annoucement-table {
+    margin-top: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    transition: ease-in 0.4s, top 0.4s;
+
+}
+
+.popup {
     border-radius: 50%;
     position: absolute;
     top: 0;
@@ -101,30 +115,21 @@ footer {
     transition: ease-in 0.4s, top 0.4s;
 }
 
+.open-popup-table {
+    visibility: visible;
+    top: 200px;
+    transform: translate(-50%, -50%) scale(1);
+}
+
 .annouceBtnpopup {
     margin: 100px;
     margin-top: 700px;
 }
 
-.open-popup {
-    visibility: visible;
-    top: 100px;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.annoucement-table {
-    margin-top: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.3);
-
-}
-
 .table-box {
     display: block;
     width: 500px;
-} */
+}
 
 .title {
     width: 50px;
@@ -135,27 +140,10 @@ footer {
 table,
 th,
 td {
-    /* border: 2px solid rgb(35, 35, 70); */
     justify-content: center;
     align-items: center;
 }
 
-/* .annoucement-table {
-    visibility: hidden;
-    position: absolute;
-    top: -30%;
-    left: 50%;
-    display: flex;
-    transform: translate(-50%, -50%) scale(0.5);
-    transition: ease-in 0.4s, top 0.4s;
-
-}
-
-.open-popup-table {
-    visibility: visible;
-    top: 200px;
-    transform: translate(-50%, -50%) scale(1);
-} */
 
 /* upload marks */
 .container {
@@ -170,15 +158,9 @@ td {
     width: 80%;
 }
 
-.headline {
-    border: 1px solid white;
-    background-color: white;
-    margin: 0%;
-}
-
 .scroll {
     white-space: nowrap;
-    margin: 0 2em;
+    margin: 0 2em 3rem;
 }
 
 .scroll div {
@@ -207,3 +189,4 @@ td {
 .RightToLeft {
     animation: RightToLeft 10s infinite linear;
 }
+

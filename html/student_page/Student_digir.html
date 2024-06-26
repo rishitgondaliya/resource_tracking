@@ -1,6 +1,8 @@
 <html ng-app="digitalResourceApp">
+
 <head>
-    <title>DigitalResource Faculty</title>
+
+    <title>DigitalResource Student</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
 
@@ -16,22 +18,19 @@
         <div class="gtu">
             <img src="/css/affilated.jpg" alt="">
         </div>
+
     </div>
     <nav>
-        <a href="/" style="text-decoration: none;">
+        <a href="/html/index2.html" style="text-decoration: none;">
             <div class="headline">Home</div>
         </a>
         <a href="#!upload_marks" style="text-decoration: none;">
-            <div class="headline">Upload Marks</div>
+            <div class="headline">Marks</div>
         </a>
         <a href="#!upload_documents" style="text-decoration: none;">
-            <div class="headline">Upload Documents</div>
-        </a>
-        <a href="/html/digir_admin.html" style="text-decoration: none;">
-            <div class="headline">Administration</div>
+            <div class="headline">Documents</div>
         </a>
     </nav>
-
 
     <div ng-view></div>
 
@@ -42,80 +41,52 @@
         app.config(function ($routeProvider) {
             $routeProvider
                 .when("/", {
-                    templateUrl: "first_digir.html"
+                    templateUrl: "front_digir.html"
                 })
                 .when("/upload_marks", {
-                    templateUrl: "upload_marks.html",
+                    templateUrl: "get_marks.html",
                     controller: "uploadmarkcontroller"
                 })
                 .when("/upload_documents", {
-                    templateUrl: "upload_documents.html",
+                    templateUrl: "get_documents.html",
                     controller: "uploaddocumentcontroller"
                 });
         });
 
-        app.controller('uploadmarkcontroller', ['$scope', '$http', function ($scope, $http) {
-            $scope.subjects = [];
-            $scope.students = [];
-            $scope.dept = '';
-            $scope.sem = '';
-            $scope.currentyear = '';
-            $scope.subject = '';
-
-
-            $scope.fetchSubjects = function () {
-                if ($scope.dept && $scope.sem) {
-                    $http.get(`/subjects/${$scope.dept}/${$scope.sem}`)
-                        .then(function (response) {
-                            $scope.subjects = [];
-                            var subjectData = response.data;
-                            for (var key in subjectData) {
-                                if (subjectData.hasOwnProperty(key) && key.startsWith('subject')) {
-                                    $scope.subjects.push(subjectData[key]);
-                                }
-                            }
-                            alert('subject fetched');
-                        }, function (error) {
-                            console.error('Error fetching subjects:', error);
-                        });
-                }
-            };
-
+        app.controller('uploadmarkcontroller', function ($scope, $http) {
             $scope.enterForMark = function () {
-                if ($scope.dept && $scope.sem && $scope.currentyear) {
-                    const collectionName = `${$scope.dept}_${$scope.sem}_${$scope.currentyear}`;
-                    $http.get(`/api/students/${collectionName}`).then(function (response) {
-                        $scope.students = response.data;
-                    }).catch(function (error) {
-                        console.error('Error fetching students:', error);
-                    });
-                }
+                const { dept, sem, currentyear, enrollment } = $scope;
+                const url = `/students_marks/${dept}/${sem}/${currentyear}/${enrollment}`;
+                $http.get(url).then((response) => {
+                    if (response.data && response.data.length) {
+                        $scope.student = response.data[0];
+                        // Transform the data for table display
+                        $scope.transformedData = transformData($scope.student);
+                    } else {
+                        $scope.students = [];
+                        alert('No data found');
+                    }
+                }).catch((error) => {
+                    console.error('Error fetching student data:', error);
+                    alert('Error fetching student data');
+                });
             };
 
-            $scope.saveData = function () {
-                const department = $scope.dept;
-                const semester = $scope.sem;
-                const year = $scope.currentyear;
-                const collectionName = `${department}_${semester}_${year}_marks`;
-                const data = $scope.students.map(student => {
-                    return {
-                        enrollment: student.enrollment,
-                        name: student.name,
-                        [`${$scope.subject}_midmark`]: student.midmark || 'N/A',
-                        [`${$scope.subject}_remidmark`]: student.remidmark || 'N/A',
-                        [`${$scope.subject}_vivamark`]: student.vivamark || 'N/A'
-                    };
+            function transformData(student) {
+                const subjects = Object.keys(student).filter(key => key.includes('('));
+                const result = {};
+                subjects.forEach(subject => {
+                    const [sub, type] = subject.split('_');
+                    if (!result[sub]) result[sub] = {};
+                    result[sub][type] = student[subject];
                 });
-                $http.post('/saveMarks', { collectionName, data })
-                    .then(response => {
-                        alert('Data saved successfully!');
-                    })
-                    .catch(error => {
-                        console.error('Error saving data:', error);
-                        alert('Failed to save data. Please try again.');
-                    });
-            };
-        }]);
+                return result;
+            }
+        });
+
+
+
+
 
 
 

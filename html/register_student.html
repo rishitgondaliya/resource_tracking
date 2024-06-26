@@ -1,86 +1,209 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="sapp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXlFbz4rkn0GZxHEeCoYlroQ6ABblHVI5Y9zH9MP3xVk6N/IfC4SrZ5iM" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgjCJo7kIVvkrxwr7gT2Nt3CQBxSBl8H+AHjrIPrylgj0vKO8sw" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXlFbz4rkn0GZxHEeCoYlroQ6ABblHVI5Y9zH9MP3xVk6N/IfC4SrZ5iM"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgjCJo7kIVvkrxwr7gT2Nt3CQBxSBl8H+AHjrIPrylgj0vKO8sw"
+        crossorigin="anonymous"></script>
     <title>Document</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 20px;
+        }
+
+        nav {
+            width: 70%;
+            margin: 0px auto 20px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-around;
+        }
+
         .form-control-dark-border {
-            border-color: #121314; /* Dark border color */
+            border-color: #343a40;
+            /* Dark border color */
+            background-color: #e9ecef;
+            /* Light background color */
+        }
+
+        .container-fluid {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+        }
+        .row-header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 0;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .row-content {
+            padding: 10px 0;
+        }
+
+        h3,
+        h4,
+        h6 {
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        /* Custom style from external CSS */
+        .custom-row {
+            margin-top: 10px;
+        }
+
+        .custom-input {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 8px 10px;
+        }
+
+        .custom-button {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            width: auto;
+            padding: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .custom-button:hover {
+            background-color: #218838;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
         }
     </style>
-    
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body ng-controller="scontroller">
-    <div><h3>Please Enter Following Details.</h3></div>
-
-    <div>
-        
-        <label for="department">Department : </label>
-        <select id="department" ng-model="dept" ng-change="updateDepartment()">
-            <option value="it">Information Technology</option>
-            <option value="ce">Computer Engineering</option>
-            <option value="civil">Civil Engineering</option>
-            <option value="mech">Mechanical Engineering</option>
-            <option value="aiml">AI/ML</option>
-            <option value="chem">Chemical Engineering</option>
-        </select>
-
-        <label for="sem">Sem : </label>
-        <select id="sem" ng-model="sem" ng-change="updateSemester()">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-        </select>
-
-        <label for="curr_year">Enter Admission Year : </label>
-        <input type="number" id="curr_year" ng-model="currentyear"/>
-        <label for="number_stu">Enter Number of Student : </label>
-        <input type="number" id="number_stu" ng-model="numberOfStudents" ng-change="updateStudents()"/>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-1"><h4>Sr no.</h4></div>
-            <div class="col-md-2"><h4>Enroll Number</h4></div>
-            <div class="col-md-3"><h4>Name</h4></div>
-            <div class="col-md-1"><h4>Sem</h4></div>
-            <div class="col-md-1"><h4>Dept</h4></div>
-            <div class="col-md-2"><h4>E-mail</h4></div>
-            <div class="col-md-2"><h4>Phone No.</h4></div>
+    
+    <div class="container">
+        <div>
+            <h3>Please Enter Following Details.</h3>
         </div>
-    </div>
-    <div class="container-fluid">
-        <div ng-repeat="student in students track by $index">
-            <div class="row mt-2">
-                <div class="col-sm-1"><h6>Student-{{$index + 1}}</h6></div>
-                <div class="col-sm-2"><input type="number" ng-model="student.enrollment" class="form-control form-control-sm form-control-dark-border" required></div>
-                <div class="col-sm-3"><input type="text" ng-model="student.name" class="form-control form-control-sm form-control-dark-border" required></div>
-                <div class="col-sm-1"><input type="text" ng-model="student.semester" class="form-control form-control-sm form-control-dark-border"></div>
-                <div class="col-sm-1"><input type="text" ng-model="student.department" class="form-control form-control-sm form-control-dark-border"></div>
-                <div class="col-sm-2"><input type="email" ng-model="student.email" class="form-control form-control-sm form-control-dark-border" required></div>
-                <div class="col-sm-2"><input type="tel" ng-model="student.phone" class="form-control form-control-sm form-control-dark-border" required></div>
+        <div class="row row-content">
+            <div class="col-sm-4">
+                <label for="department">Department :</label>
+                <select id="department" ng-model="dept" ng-change="updateDepartment()"
+                    class="form-control form-control-dark-border custom-input">
+                    <option value="it">Information Technology</option>
+                    <option value="ce">Computer Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                    <option value="mech">Mechanical Engineering</option>
+                    <option value="aiml">AI/ML</option>
+                    <option value="chem">Chemical Engineering</option>
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <label for="sem">Sem:</label>
+                <select id="sem" ng-model="sem" ng-change="updateSemester()"
+                    class="form-control form-control-dark-border custom-input">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label for="curr_year">Enter Admission Year :</label>
+                <input type="number" id="curr_year" ng-model="currentyear"
+                    class="form-control form-control-dark-border custom-input" />
+            </div>
+            <div class="col-sm-4">
+                <label for="number_stu">Enter Number of Student :</label>
+                <input type="number" id="number_stu" ng-model="numberOfStudents" ng-change="updateStudents()"
+                    class="form-control form-control-dark-border custom-input" />
             </div>
         </div>
     </div>
 
-    <div class="container">
-  <div class="row">
-    <div class="col">
-      <button class="btn btn-success mx-auto d-block" ng-click="saveData()">Submit</button>
+    <div class="container mt-4">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Sr no.</th>
+                        <th scope="col">Enroll Number</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Sem</th>
+                        <th scope="col">Dept</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Phone No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in students track by $index">
+                        <td>{{ $index + 1 }}</td>
+                        <td><input type="number" ng-model="student.enrollment"
+                                class="form-control form-control-sm"></td>
+                        <td><input type="text" ng-model="student.name" class="form-control form-control-sm"></td>
+                        <td><input type="text" ng-model="student.semester"
+                                class="form-control form-control-sm"></td>
+                        <td><input type="text" ng-model="student.department"
+                                class="form-control form-control-sm"></td>
+                        <td><input type="email" ng-model="student.email" class="form-control form-control-sm"></td>
+                        <td><input type="tel" ng-model="student.phone" class="form-control form-control-sm"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-</div>
+
+    <!-- Button Section -->
+    <div class="buttons">
+        <div class="row">
+            <div>
+                <button class="btn btn-success btn-block" ng-click="saveData()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+
 </body>
+
 </html>

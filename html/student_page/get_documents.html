@@ -132,7 +132,7 @@
 
   <div id="uploadForm" class="container">
     <h1>Study Material</h1>
-    <h2>Upload</h2>
+    <h2>Download</h2>
     <form>
       <label for="uploadDepartment">Select Department:</label>
       <select id="uploadDepartment" name="department" ng-model="dept" ng-change="fetchSubjects()">
@@ -162,9 +162,6 @@
       <select id="subject" ng-model="subject">
         <option ng-repeat="subject in subjects" value="{{subject}}">{{subject}}</option>
       </select>
-      <label for="book">Upload File:</label>
-      <input type="file" name="book" id="book"><br><br>
-      <button type="button" ng-click="uploadFile()">Submit</button>
       <button type="button" ng-click="displayFile()">Display</button>
     </form>
   </div>
@@ -179,7 +176,6 @@
           <th>Subject</th>
           <th>File</th>
           <th>Download</th>
-          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -189,7 +185,6 @@
           <td>{{file.subject}}</td>
           <td>{{file.name}}</td>
           <td><button ng-click="downloadFile(file.name)">Download</button></td>
-          <td><button class="delete" ng-click="deleteFile(file.name)">Delete</button></td>
         </tr>
       </tbody>
     </table>

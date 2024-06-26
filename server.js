@@ -321,3 +321,194 @@ app.delete('/delete', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
+
+//*******************************timetable******************
+
+
+const timetableSchema = new mongoose.Schema({}, { strict: false });
+
+// Endpoint to fetch timetable based on department and semester
+app.post('/api/getTimetable', async (req, res) => {
+    const { department, semester } = req.body;
+    const collectionName = `${department}_${semester}_timetable`;
+	console.log(collectionName);
+    try {
+        const Timetable = mongoose.model(collectionName, timetableSchema, collectionName);
+        const timetable = await Timetable.find({});
+        res.json(timetable);
+	console.log(timetable);
+    } catch (error) {
+        res.status(500).json({ error: 'Unable to fetch timetable' });
+    }
+});
+
+//***************************assets management**********
+const classroomSchema = new mongoose.Schema({
+    classId: { type: String, required: true },
+    assets: [
+        {
+            name: { type: String, required: true },
+            quantity: { type: Number, required: true }
+        }
+    ]
+});
+
+const Classroom = mongoose.model('Classroom', classroomSchema);
+
+app.post('/api/assets', async (req, res) => {
+    try {
+        const { classId, name, quantity } = req.body;
+        let classroom = await Classroom.findOne({ classId });
+        if (!classroom) {
+            classroom = new Classroom({ classId, assets: [] });
+        }
+        const assetIndex = classroom.assets.findIndex(asset => asset.name === name);
+        if (assetIndex > -1) {
+            classroom.assets[assetIndex].quantity = quantity;
+        } else {
+            classroom.assets.push({ name, quantity });
+        }
+        await classroom.save();
+        res.json({ message: 'Asset added/updated successfully', classroom });
+    } catch (error) {
+        console.error('Error adding/updating asset:', error);
+        res.status(500).send('Error adding/updating asset');
+    }
+});
+
+// Endpoint to get all assets for a class
+app.get('/api/assets', async (req, res) => {
+    try {
+        const { classId } = req.query;
+        const classroom = await Classroom.findOne({ classId });
+        if (!classroom) {
+            return res.status(404).json({ message: 'Classroom not found' });
+        }
+        res.json(classroom.assets);
+    } catch (error) {
+        console.error('Error fetching assets:', error);
+        res.status(500).send('Error fetching assets');
+    }
+});
+
+// Endpoint to delete an asset
+app.delete('/api/assets', async (req, res) => {
+    try {
+        const { classId, name } = req.body;
+        const classroom = await Classroom.findOne({ classId });
+        if (!classroom) {
+            return res.status(404).json({ message: 'Classroom not found' });
+        }
+        classroom.assets = classroom.assets.filter(asset => asset.name !== name);
+        await classroom.save();
+        res.json({ message: 'Asset deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting asset:', error);
+        res.status(500).send('Error deleting asset');
+    }
+});
+
+// Endpoint to clear all assets for a class
+app.post('/api/assets/clear', async (req, res) => {
+    try {
+        const { classId } = req.body;
+        const classroom = await Classroom.findOne({ classId });
+        if (!classroom) {
+            return res.status(404).json({ message: 'Classroom not found' });
+        }
+        classroom.assets = [];
+        await classroom.save();
+        res.json({ message: 'All assets cleared successfully' });
+    } catch (error) {
+        console.error('Error clearing assets:', error);
+        res.status(500).send('Error clearing assets');
+    }
+});
+
+//************************announcement**************
+const announcementSchema = new mongoose.Schema({
+    date: { type: Date, required: true },
+    hour: { type: Number, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
+});
+
+const Announcement = mongoose.model('Announcement', announcementSchema);
+app.post('/api/announcement', async (req, res) => {
+    try {
+        const { date, hour, title, description } = req.body;
+        const announcement = new Announcement({ date, hour, title, description, createdAt: new Date() });
+        await announcement.save();
+        res.json({ message: 'Announcement saved successfully', announcement });
+    } catch (error) {
+        console.error('Error saving announcement:', error);
+        res.status(500).send('Error saving announcement');
+    }
+});
+
+app.get('/api/announcement', async (req, res) => {
+    try {
+        const announcements = await Announcement.find();
+        res.json(announcements);
+    } catch (error) {
+        console.error('Error fetching announcements:', error);
+        res.status(500).send('Error fetching announcements');
+    }
+});
+
+app.delete('/api/announcement/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedAnnouncement = await Announcement.findByIdAndDelete(id);
+    if (!deletedAnnouncement) {
+      return res.status(404).json({ error: 'Announcement not found' });
+    }
+    res.json({ message: 'Announcement deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting announcement:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/announcement/all', async (req, res) => {
+  try {
+    const allAnnouncements = await Announcement.find();
+    res.json(allAnnouncements);
+  } catch (err) {
+    console.error('Error fetching all announcements:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//******************provide student marks************
+
+app.get('/students_marks/:department/:semester/:year/:enrollment?', async (req, res) => {
+    const { department, semester, year, enrollment } = req.params;
+    const collectionName = `${department}_${semester}_${year}_marks`;
+
+    try {
+        const collections = await mongoose.connection.db.listCollections().toArray();
+        const collectionExists = collections.some(collection => collection.name === collectionName);
+
+        if (!collectionExists) {
+            res.json({ message: 'Collection not found' });
+            console.log('data is not available');
+            return;
+        }
+
+        const Student = mongoose.model(collectionName, studentSchema, collectionName);
+        const query = enrollment ? { enrollment: parseInt(enrollment) } : {};
+        const students = await Student.find(query);
+
+        if (students.length === 0) {
+            res.json({ message: 'Collection is available but no data found' });
+            console.log('data is not available');
+        } else {
+            res.json(students);
+        }
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        res.status(500).send('Error fetching students');
+    }
+});

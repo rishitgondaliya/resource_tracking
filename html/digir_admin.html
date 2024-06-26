@@ -6,73 +6,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
     <script src="../js/servicesEditData.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
 
-        .ldheader {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            border-bottom: 3px solid blue;
-            padding-bottom: 20px;
-        }
-
-        .logo {
-            height: fit-content;
-            width: fit-content;
-            margin-left: 400px;
-        }
-
-        .ldname {
-            font-size: 35px;
-            height: fit-content;
-            width: fit-content;
-            font-family: Arial, Helvetica, sans-serif;
-            padding-left: 10px;
-        }
-
-        .menubar {
-            margin-left: 100px;
-            display: flex;
-        }
-
-        .loc {
-            font-size: 20px;
-        }
-
-        .headline {
-            width: fit-content;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            margin-left: 130px;
-            color: #00008b;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            border-bottom: 4px solid #00008b;
-        }
-
-        .headline1 {
-            width: fit-content;
-            margin: 15px 0 15px 250px;
-            color: #00008b;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            border-bottom: 4px solid #00008b;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
     <div class="ldheader">
         <div class="logo"><img src="/css/ldlogo.png" style="height: 100px; width: 100px;"></div>
-        <div class="ldname">L.D. College of Engineering <div class="loc">Ahmedabad, Gujarat, India</div>
+        <div class="ldname">L. D. College of Engineering
+            <div class="loc">Ahemedabad, Gujarat, India</div>
+        </div>
+        <div class="gtu">
+            <img src="/css/affilated.jpg" alt="">
         </div>
     </div>
-
-    <div class="menubar">
+    <nav>
         <a href="/" style="text-decoration: none;">
             <div class="headline">Home</div>
         </a>
@@ -85,11 +33,9 @@
         <a href="#!shift_sem" style="text-decoration: none;">
             <div class="headline">Change Student Sem</div>
         </a>
-    </div>
-
+    </nav>
 
     <div ng-view></div>
-
 
     <script>
         var app = angular.module('digitalResourceApp', ['ngRoute']);
@@ -97,7 +43,7 @@
         app.config(function ($routeProvider) {
             $routeProvider
                 .when("/", {
-                    template: "<h1>hello</h1>"
+                    templateUrl: "first_digir.html"
                 })
                 .when("/register_student", {
                     templateUrl: "register_student.html",
@@ -172,7 +118,7 @@
                     return $http.get(`/students/${department}/${semester}/${year}`);
                 },
                 updateStudents: function (department, semester, year, students) {
-                return $http.put(`/students/${department}/${semester}/${year}`, students);
+                    return $http.put(`/students/${department}/${semester}/${year}`, students);
                 },
                 deleteAllStudents: function (department, semester, year) {
                     return $http.delete(`/students/${department}/${semester}/${year}`);
@@ -212,41 +158,41 @@
                     alert('Please select department, semester, and enter admission year.');
                 }
             };
-            
+
             $scope.saveData = function () {
-        const department = $scope.dept;
-        const semester = $scope.sem;
-        const currentYear = $scope.currentyear;
+                const department = $scope.dept;
+                const semester = $scope.sem;
+                const currentYear = $scope.currentyear;
 
-        const updatedStudents = $scope.students.map(function (student) {
-            return {
-                department: department,
-                semester: semester,
-                currentYear: currentYear,
-                enrollment: student.enrollment,
-                name: student.name,
-                email: student.email,
-                phone: student.phone
+                const updatedStudents = $scope.students.map(function (student) {
+                    return {
+                        department: department,
+                        semester: semester,
+                        currentYear: currentYear,
+                        enrollment: student.enrollment,
+                        name: student.name,
+                        email: student.email,
+                        phone: student.phone
+                    };
+                });
+
+                StudentService.updateStudents(department, semester, currentYear, updatedStudents)
+                    .then(function (response) {
+                        if (response.data.message === 'Collection does not exist') {
+                            alert('collection does not exist');
+                        }
+                        else if (response.data.message === 'Student data updated successfully') {
+                            console.log('Data updated successfully:', response.data);
+                            alert('Student data updated successfully');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Error updating data:', error);
+                        alert('error', error);
+                    });
             };
-        });
 
-        StudentService.updateStudents(department, semester, currentYear, updatedStudents)
-            .then(function (response) {
-                if(response.data.message === 'Collection does not exist'){
-                    alert('collection does not exist');
-                }
-                else if(response.data.message === 'Student data updated successfully'){
-                console.log('Data updated successfully:', response.data);
-                    alert('Student data updated successfully');
-                }
-            })
-            .catch(function (error) {
-                console.error('Error updating data:', error);
-                alert('error' , error);
-            });
-        };
-
-        $scope.deleteData = function () {
+            $scope.deleteData = function () {
                 const department = $scope.dept;
                 const semester = $scope.sem;
                 const currentYear = $scope.currentyear;
@@ -265,7 +211,7 @@
                     alert('Please select department, semester, and enter admission year.');
                 }
             };
-        
+
             $scope.deleteSpecificData = function () {
                 $scope.showEnrollmentInput = true;
             };

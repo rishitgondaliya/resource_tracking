@@ -1,84 +1,193 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="digitalResourceApp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXlFbz4rkn0GZxHEeCoYlroQ6ABblHVI5Y9zH9MP3xVk6N/IfC4SrZ5iM" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgjCJo7kIVvkrxwr7gT2Nt3CQBxSBl8H+AHjrIPrylgj0vKO8sw" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXlFbz4rkn0GZxHEeCoYlroQ6ABblHVI5Y9zH9MP3xVk6N/IfC4SrZ5iM"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgjCJo7kIVvkrxwr7gT2Nt3CQBxSBl8H+AHjrIPrylgj0vKO8sw"
+        crossorigin="anonymous"></script>
+    <title>Shift Semester Form</title>
     <style>
-        .form-control-dark-border {
-            border-color: #121314; /* Dark border color */
+        nav {
+            width: 70%;
+            margin: 0px auto 20px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin-top: -10px;
+        }
+        .form-control,
+        .custom-input {
+            border-color: #ced4da;
+        }
+
+        .form-control:focus,
+        .custom-input:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+
+        .mt-5 {
+            margin-top: 3rem;
+        }
+
+        .button button{
+            margin: 10px auto;
+            font-size: 20px;
         }
     </style>
-    
 </head>
-<body ng-controller="shiftsemcontroller">
-    <div><h3>Please Enter Following Details.</h3></div>
 
-    <div>
-        <label for="department">Department : </label>
-        <select id="department" ng-model="dept" ng-change="updateDepartment()">
-            <option value="it">Information Technology</option>
-            <option value="ce">Computer Engineering</option>
-            <option value="civil">Civil Engineering</option>
-            <option value="mech">Mechanical Engineering</option>
-            <option value="aiml">AI/ML</option>
-            <option value="chem">Chemical Engineering</option>
-        </select>
-
-        <label for="sem">Sem : </label>
-        <select id="sem" ng-model="sem" ng-change="updateSemester()">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-        </select>
-
-        <label for="curr_year">Enter Admission Year : </label>
-        <input type="number" id="curr_year" ng-model="currentyear"/>
-
+<body ng-controller="editdatacontroller">
+    <div class="container">
+        <!-- First Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        <h3>Please Enter Following Details.</h3>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="department">Department :</label>
+                    </td>
+                    <td>
+                        <select id="department" ng-model="dept" ng-change="updateDepartment()"
+                            class="form-control form-control-dark-border custom-input">
+                            <option value="it">Information Technology</option>
+                            <option value="ce">Computer Engineering</option>
+                            <option value="civil">Civil Engineering</option>
+                            <option value="mech">Mechanical Engineering</option>
+                            <option value="aiml">AI/ML</option>
+                            <option value="chem">Chemical Engineering</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="sem">Sem :</label>
+                    </td>
+                    <td>
+                        <select id="sem" ng-model="sem" ng-change="updateSemester()"
+                            class="form-control form-control-dark-border custom-input">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="curr_year">Enter Admission Year :</label>
+                    </td>
+                    <td>
+                        <input type="number" id="curr_year" ng-model="currentyear"
+                            class="form-control form-control-dark-border custom-input" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    <div class="container">
+        <!-- Second Table -->
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        <h3>Check Following Details to shift student to next sem.</h3>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="department2">Department :</label>
+                    </td>
+                    <td>
+                        <select id="department2" ng-model="dept2" ng-change="updateDepartment()"
+                            class="form-control form-control-dark-border custom-input">
+                            <option value="it">Information Technology</option>
+                            <option value="ce">Computer Engineering</option>
+                            <option value="civil">Civil Engineering</option>
+                            <option value="mech">Mechanical Engineering</option>
+                            <option value="aiml">AI/ML</option>
+                            <option value="chem">Chemical Engineering</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="sem2">Sem :</label>
+                    </td>
+                    <td>
+                        <select id="sem2" ng-model="sem2" ng-change="updateSemester()"
+                            class="form-control form-control-dark-border custom-input">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="curr_year2">Enter Admission Year :</label>
+                    </td>
+                    <td>
+                        <input type="number" id="curr_year2" ng-model="currentyear2"
+                            class="form-control form-control-dark-border custom-input" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <div class="mt-5"><h3>Check Following Details to shift student to next sem.</h3></div>
-
-    <div>
-        <label for="department">Department : </label>
-        <select id="department" ng-model="dept" ng-change="updateDepartment()">
-            <option value="it">Information Technology</option>
-            <option value="ce">Computer Engineering</option>
-            <option value="civil">Civil Engineering</option>
-            <option value="mech">Mechanical Engineering</option>
-            <option value="aiml">AI/ML</option>
-            <option value="chem">Chemical Engineering</option>
-        </select>
-
-        <label for="sem">Sem : </label>
-        <select id="sem" ng-model="sem2" ng-change="updateSemester()">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-        </select>
-
-        <label for="curr_year">Enter Admission Year : </label>
-        <input type="number" id="curr_year" ng-model="currentyear"/>
-
-        
+        <!-- Button -->
+        <div class="button">
+            <button class="btn btn-primary btn-sm mt-3" ng-click="shiftSem()">Shift Semester {{sem}} to {{sem2}}</button>
+        </div>
     </div>
-
-    <button class="btn btn-primary btn-sm" ng-click="shiftSem()">shift sem {{sem}} to {{sem2}}</button>
 </body>
+
 </html>

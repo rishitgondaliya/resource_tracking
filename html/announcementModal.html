@@ -1,0 +1,15 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js"></script>
+
+
+        <div class="modal-header">
+            <h3 class="modal-title">{{ modalAnnouncement.title }}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{ modalAnnouncement.description }}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="closeModal()">Close</button>
+        </div>
+        

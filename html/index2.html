@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="indexApp">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resorce Tracking & Utilization System</title>
-    <link rel="stylesheet" href="style1.css">
+    <title>Student College Page</title>
+    <link rel="stylesheet" href="/css/style.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -16,59 +14,198 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* .ldheader {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid blue;
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            height: fit-content;
+            width: fit-content;
+            margin-left: 400px;
+        }
+
+        .ldname {
+            font-size: 35px;
+            height: fit-content;
+            width: fit-content;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-left: 10px;
+        }
+
+        .menubar {
+            margin-left: 100px;
+            display: flex;
+        }
+
+        .loc {
+            font-size: 20px;
+        }
+
+        .headline {
+            width: fit-content;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            margin-left: 130px;
+            color: #00008b;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            border-bottom: 4px solid #00008b;
+        }
+
+        .headline1 {
+            width: fit-content;
+            margin: 15px 0 15px 250px;
+            color: #00008b;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            border-bottom: 4px solid #00008b;
+        }
+
+        .content {
+            height: fit-content;
+            margin: 25px 250px 25px 250px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            padding: 50px;
+            border-left: 3px solid #00008b;
+        } */
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
-    <div style="display: flex; justify-content: center;" id="annouceBtn">
-        <button type="button" class="btn btn-primary" onclick="openPopUp()">Announcement</button>
+<body ng-controller="AnnouncementController">
+    <div class="ldheader">
+        <div class="logo"><img src="/css/ldlogo.png" style="height: 100px; width: 100px;"></div>
+        <div class="ldname">L. D. College of Engineering
+            <div class="loc">Ahemedabad, Gujarat, India</div>
+        </div>
+        <div class="gtu">
+            <img src="/css/affilated.jpg" alt="">
+        </div>
+
     </div>
-    <div class="popup" id="popup">
-        <button class="btn btn-primary annouceBtnpopup" onclick="openPopUptable()">Create a new Announcement</button>
-        <button class="btn btn-primary annouceBtnpopup" onclick="closePopUp()">Edit Existing Announcement</button>
-    </div>
-    <div>
-        <table id="annoucement-table" class="annoucement-table table">
-            <tr>
-                <td colspan="2">
-                    <label for="title">Title :</label>
-                    <input type="text" id="title" name="title" required>
-                </td>
-            </tr>
-            <tr>
-                <td rowspan="2">
-                    <label for="description">Description : </label>
-                    <textarea name="description" required id="description" cols="30" rows="5"></textarea>
-                </td>
-                <td>
-                    <label for="date">Date :</label>
-                    <input type="date" id="date" name="date" required>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="floating-time">Floating Time :</label>
-                    <input type="datetime-local" id="floating-time" name="floating-time" required>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="submit" class="btn btn-success">Submit</button>
-                    <button type="reset" class="btn btn-danger" onclick="closePopUptable()">Cancel</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="container">
+    <nav>
+        <a href="/html/index2.html" style="text-decoration: none;">
+            <div class="headline">Home</div>
+        </a>
+        <a href="/html/student_page/Student_announcement.html" style="text-decoration: none;">
+            <div class="headline">Announcement</div>
+        </a>
+        <a href="/html/student_page/Student_physical.html" target="_blank" style="text-decoration: none;">
+            <div class="headline phy">PHYResource</div>
+        </a>
+        <a href="/html/student_page/Student_digir.html" target="_blank" style="text-decoration: none;">
+            <div class="headline dig">DigitalResource</div>
+        </a>
+        <a href="/html/main_timetable.html" target="_blank" style="text-decoration: none;">
+            <div class="headline time">TimeTable</div>
+        </a>
+    </nav>
+    
+    <div class="container" style="max-width: 70%; overflow-x: hidden; justify-content: center; align-items: center; height: 60px;">
         <div class="scroll">
             <div class="RightToLeft">
-                <p>Date:- 14/04/2024  This is new Announcement  //  15/04/2024 This is todays Announcement</p>
+                <p ng-repeat="announcement in announcements">
+                    <a href="" ng-click="openModal(announcement)" style="text-decoration: none; color: crimson;">{{announcement.date | date}} - {{ announcement.title }} // </a>
+                </p>
             </div>
         </div>
     </div>
+    <div class="headline1">Welcome To LDCE </div>
+    <div class="content"><b>L. D. College of Engineering</b> endearingly known as <b>L.D.C.E</b> is Ahmedabad’s premier
+        engineering college situated at the city’s heart and surrounded by elite organization like <b>PRL, ATIRA, ISRO,
+            IIM and CEPT</b>.
+        Starting in 1948 to impart quality higher education in various fields of engineering, it has seen unprecedented
+        growth.
+        <br><br>It is affiliated with Gujarat Technological University & administrated by Department of Technical
+        Education, Government of Gujarat.
+    </div>
+
+    <div class="headline1">Dictionary </div>
+
+    <div class="content">Our college offers a dynamic learning environment with innovative courses that
+        foster critical thinking, creativity, and hands-on experience, empowering you to excel in your
+        chosen field. check here! <a href="courses.html"><strong>courses</strong></a><br><br>
+        Our college is home to a vibrant array of departments, each dedicated to academic excellence
+        and real-world relevance. From the humanities to the sciences, our diverse departments nurture
+        curiosity, critical thinking, and creativity. check here! <a href="departments.html"><b>Departments</b></a>
+        <br><br>Our esteemed faculty members bring a wealth of knowledge and practical experience to the classroom.
+        check here! <a href="faculties.html"><b>Faculties</b></a>
+        <br><br>Our college library is a treasure trove of knowledge, providing students with access to a vast
+        collection of books, journals, and digital resources. It's a quiet sanctuary for research, study, and
+        intellectual exploration. check here! <a href="library.html"><b>Library</b></a>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+        var app = angular.module('indexApp', ['ui.bootstrap']);
+
+        app.controller('AnnouncementController', function ($scope, $http, $interval, $uibModal) {
+            $scope.announcements = [];
+            $scope.announcement = {};
+
+            $scope.fetchAnnouncements = function () {
+                $http.get('/api/announcement').then(function (response) {
+                    $scope.announcements = response.data;
+                    filterAndAppendAnnouncements();
+                }, function (error) {
+                    console.error('Error fetching announcements:', error);
+                });
+            };
 
 
+            function filterAndAppendAnnouncements() {
+                var now = new Date();
+                $scope.announcements = $scope.announcements.filter(function (announcement) {
+                    var announcementTime = new Date(announcement.createdAt);
+                    announcementTime.setHours(announcementTime.getHours() + announcement.hour);
+                    return announcementTime > now;
+                });
+            }
 
-    <script src="app.js"></script>
+            $interval(filterAndAppendAnnouncements, 60000); // Check every minute
+            $scope.fetchAnnouncements();
+
+            $scope.openModal = function (announcement) {
+                $scope.modalAnnouncement = announcement;
+
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'announcementModal.html',
+                    scope: $scope
+                });
+
+                $scope.closeModal = function () {
+                    modalInstance.close();
+                };
+            };
+        });
+
+    </script>
+
+    <script type="text/ng-template" id="announcementModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ modalAnnouncement.title }}</h3>
+    </div>
+    <div class="modal-body">
+        <p>{{ modalAnnouncement.description }}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="closeModal()">Close</button>
+    </div>
+</script>
+
 </body>
 
 </html>
